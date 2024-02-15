@@ -1,4 +1,4 @@
-# Models of the Fuitos App
+# Models of the Pipeline App
 
 - User
 

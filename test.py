@@ -1,7 +1,7 @@
 from src.utils.commons import get_timestamp
 from tests import *
 
-url = "https://fuitos.onrender.com"
+url = "https://pipeline-mnbv.onrender.com"
 url = "http://127.0.0.1:8000"
 
 artisan_email = "miracle.apata@mailinator.com"
