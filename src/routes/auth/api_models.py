@@ -92,7 +92,8 @@ class ProfileResponse(Response):
     is_artisan: bool
 
 
-class LoginResponse(SessionResponse, ProfileResponse): ...
+class LoginResponse(SessionResponse, ProfileResponse):
+    ...
 
 
 class ForgotPasswordRequest(BaseModel):
