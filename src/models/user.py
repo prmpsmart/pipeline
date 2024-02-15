@@ -12,7 +12,7 @@ class User(Model):
         email: str,
         password: str,
         phone_number: str = "",
-        profile_image: str = "",
+        image: str = "",
         **kwargs
     ) -> None:
         super().__init__(
@@ -26,7 +26,7 @@ class User(Model):
         self.email = email
         self.password = password
         self.phone_number = phone_number
-        self.profile_image = profile_image
+        self.image = image
 
 
 class Users(Models):

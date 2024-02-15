@@ -3,83 +3,33 @@ from ..utils import *
 from ..api_models import *
 
 
-class ClientData(BaseModel):
+class UserData(BaseModel):
     id: str
     created_timestamp: int
 
-    email: str
-    phone_number: str
     full_name: str
-    address: str
+    email: str
+
+    phone_number: str
+    image: str
+
+
+class RegisterRequest(BaseModel):
+    full_name: str
+    email: str
+
+    phone_number: str
     password: str
-
-    last_seen: int
-    profile_image: str
-    gender: str
-    age: int
-    id_verification: str
-    id_verification_image: str
-    location: str
-    pin: str
-    nationality: str
-
-    verifiedEmail: bool
-    verifiedID: bool
-    verifiedPhoneNumber: bool
-
-
-class ArtisanData(ClientData):
-    profession: str
-    about: str
-    education: str
-    security_question: str
-    security_answer: str
-    job_delivery_time: int
-    last_job_delivery: int
+    image: Optional[str]
 
 
 class ProfileUpdateRequest(BaseModel):
-    # gender: Optional[str]
-    # age: Optional[int]
-    profile_image: Optional[str]
-    id_verification: Optional[str]
-    id_verification_image: Optional[str]
-    location: Optional[str]
-    pin: Optional[str]
-    nationality: Optional[str]
-    profession: Optional[str]
-    about: Optional[str]
-    education: Optional[str]
-    security_question: Optional[str]
-    security_answer: Optional[str]
+    full_name: Optional[str]
+    email: Optional[str]
 
-
-class ArtisanRegisterRequest(BaseModel):
-    full_name: str
-    email: str
-    phone_number: str
-    password: str
-
-    # profession: str
-    # about: str
-    # education: str
-    # profile_image: str
-    # age: int
-    # id_verification: str
-    # id_verification_image: str
-
-
-class ClientRegisterRequest(BaseModel):
-    full_name: str
-    email: str
-    password: str
-    address: str
-
-    # nationality: str
-    # gender: str
-    # id_verification_image: str
-    # age: int
-    # id_verification: str
+    phone_number: Optional[str]
+    password: Optional[str]
+    image: Optional[str]
 
 
 class LoginRequest(BaseModel):
@@ -88,12 +38,10 @@ class LoginRequest(BaseModel):
 
 
 class ProfileResponse(Response):
-    user: ClientData | ArtisanData
-    is_artisan: bool
+    user: UserData
 
 
-class LoginResponse(SessionResponse, ProfileResponse):
-    ...
+class LoginResponse(SessionResponse, ProfileResponse): ...
 
 
 class ForgotPasswordRequest(BaseModel):

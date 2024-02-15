@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-
+from ...models.user import User
 from ...services.mail.otp import ResetOTP
 from ...utils.validators import Validator
 from .utils import *
@@ -13,8 +13,8 @@ auth_router = APIRouter(
 
 
 @auth_router.post(
-    "/register_artisan",
-    name="Register new Artisan Account",
+    "/register",
+    name="Register new user",
     responses={
         HTTP_200_OK: {
             "model": LoginResponse,
@@ -30,8 +30,8 @@ auth_router = APIRouter(
         },
     },
 )
-async def register_artisan(
-    request: ArtisanRegisterRequest,
+async def register(
+    request: RegisterRequest,
 ) -> LoginResponse:
     email = request.email
     phone_number = request.phone_number
@@ -58,7 +58,6 @@ async def register_artisan(
         )
     ):
         user = Users.create(
-            is_artisan=True,
             **request.model_dump(),
         )
         session: Session = Sessions.create_session(user)
@@ -80,67 +79,6 @@ async def register_artisan(
 
 
 @auth_router.post(
-    "/register_client",
-    name="Register new Client Account",
-    responses={
-        HTTP_200_OK: {
-            "model": LoginResponse,
-            "description": "Signed Up successfully.",
-        },
-        HTTP_400_BAD_REQUEST: {
-            "model": Response,
-            "description": "Request body contains invalid data.",
-        },
-        HTTP_409_CONFLICT: {
-            "model": Response,
-            "description": "User with email or phone number already exists.",
-        },
-    },
-)
-async def register_client(request: ClientRegisterRequest) -> LoginResponse:
-    email = request.email
-    detail = (
-        Validator.validate(request.full_name, "Full Name")
-        or Validator.validate_email(email)
-        or Validator.validate_password(request.password)
-        or Validator.validate(request.address, "Address")
-        or Validator.validate(request.nationality, "Nationality")
-        or Validator.validate_among(request.gender, ["male", "female"], "Gender")
-        or Validator.validate(request.id_verification_image, "ID Card Image")
-        or Validator.validate(request.age, "Age")
-        or Validator.validate(request.id_verification, "ID Verification")
-    )
-
-    user: User
-
-    if detail:
-        raise HTTPException(
-            HTTP_400_BAD_REQUEST,
-            detail=detail,
-        )
-    elif not (user := Users.find_one(dict(email=email))):
-        user: User = Users.create(
-            is_artisan=False,
-            **request.model_dump(),
-        )
-
-        session: Session = Sessions.create_session(user)
-        # session.client.send_otp()
-
-        return get_login_response(
-            session=session,
-            detail=f"Account created successful. OTP has been sent to `{email}`",
-        )
-    else:
-        # Users.delete_child(user._id)
-
-        raise HTTPException(
-            HTTP_409_CONFLICT,
-            detail="User with provided details already exists.",
-        )
-
-
-@auth_router.post(
     "/login",
     name="User Login",
     responses={
@@ -154,7 +92,7 @@ async def register_client(request: ClientRegisterRequest) -> LoginResponse:
         },
         HTTP_406_NOT_ACCEPTABLE: {
             "model": Response,
-            "description": "Invalid `username`, `email`, or `password`.",
+            "description": "Invalid `email`, or `password`.",
         },
     },
 )
@@ -172,7 +110,10 @@ def login(request: LoginRequest) -> LoginResponse:
         )
 
     elif session := Sessions.get_by_email(request.email):
-        return get_login_response(password=request.password, session=session)
+        return get_login_response(
+            password=request.password,
+            session=session,
+        )
 
     elif user := Users.find_one(dict(email=email)):
         return get_login_response(
@@ -310,43 +251,8 @@ async def profile(
     request: ProfileUpdateRequest,
     session: Session = get_user_session,
 ) -> ProfileResponse:
-    if request.profile_image:
-        if not is_link(request.profile_image):
-            session.user.profile_image = upload_media(
-                f"profile-image-{session.user.id}",
-                request.profile_image,
-                is_profile_image=True,
-            )
-    if request.id_verification:
-        session.user.id_verification = request.id_verification
-    if request.id_verification_image:
-        if not is_link(request.id_verification_image):
-            session.user.id_verification_image = upload_media(
-                f"id-card-image-{session.user.id}",
-                request.id_verification_image,
-                is_identity_image=True,
-            )
-    if request.location:
-        session.user.location = request.location
-    if request.pin:
-        session.user.pin = request.pin
-    if request.nationality:
-        session.user.nationality = request.nationality
-    if request.profession:
-        session.user.profession = request.profession
-    if request.about:
-        session.user.about = request.about
-    if request.education:
-        session.user.education = request.education
-    if request.security_question:
-        session.user.security_question = request.security_question
-    if request.security_answer:
-        session.user.security_answer = request.security_answer
-
-    session.user.save()
-
+    session.user.update(**request.model_dump())
     return ProfileResponse(
         detail="Profile updated successfully",
         user=get_user_data(session.user),
-        is_artisan=session.user.is_artisan,
     )

@@ -10,7 +10,7 @@
 
   - password `str`
   - phone_number `str` `nr`
-  - profile_image `str`
+  - image `str`
 
 - Transaction
 
