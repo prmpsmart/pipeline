@@ -20,11 +20,6 @@ TOKEN_PICKLE = "src/constants/token.pickle"
 
 CREDENTIALS_JSON = "google_client_secret.json"
 
-FIREBASE_PROJECT_ID = "pipeline-backend"
-
-SERVICE_ACCOUNT_JSON = f"{FIREBASE_PROJECT_ID}-firebase-adminsdk.json"
-
-
 logging.basicConfig(level=logging.NOTSET)
 
 LOGGER = logging.getLogger("  ")

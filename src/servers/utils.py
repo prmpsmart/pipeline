@@ -2,7 +2,6 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 
 from ..services.mail.gmail import GmailSend
-from ..services.storage import InitFirebaseApp
 
 
 # from ..constants.config import LOGGER
@@ -12,12 +11,10 @@ from ..routes.utils import *
 from .sio_server import *
 
 # from ..mail.gmail import GmailSend
-# from ..storage import InitFirebaseApp
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    InitFirebaseApp()
     run_on_thread(Sessions.clear_sessions)
     # GmailSend.setup()
 

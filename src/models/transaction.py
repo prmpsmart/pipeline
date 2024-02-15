@@ -14,7 +14,7 @@ class Transaction(Model):
         main_pipeline: str = "",
         branch_pipeline: str = "",
         remark: str = "",
-        originating: bank = None,
+        originating_bank: str = "",
         **kwargs
     ) -> None:
         super().__init__(
@@ -30,7 +30,7 @@ class Transaction(Model):
         self.main_pipeline = main_pipeline
         self.branch_pipeline = branch_pipeline
         self.remark = remark
-        self.originating = originating
+        self.originating_bank = originating_bank
 
 
 class Transactions(Models):

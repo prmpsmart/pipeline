@@ -1,6 +1,5 @@
 from socketio import AsyncServer, ASGIApp
 
-from ..models.message import *
 from ..constants.config import LOGGER
 from ..routes.utils import *
 

@@ -23,7 +23,7 @@
   - main_pipeline `str`
   - branch_pipeline `str`
   - remark `str`
-  - originating bank `str`
+  - originating_bank `str`
 
 - Wallet
 

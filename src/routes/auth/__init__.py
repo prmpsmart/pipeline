@@ -2,7 +2,6 @@ from fastapi import APIRouter
 
 
 from ...services.mail.otp import ResetOTP
-from ...services.storage import upload_media
 from ...utils.validators import Validator
 from .utils import *
 
