@@ -6,7 +6,7 @@ COPY requirements.txt .
 # Install the requirements specified in requirements.txt using pip
 RUN pip install -r requirements.txt
 # Copy all the files from the host to the container's working directory
-# COPY . .
+COPY . .
 # Expose port 8000 for the application
 EXPOSE 8000
 # Start the application using uvicorn with the specified host and port
