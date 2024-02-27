@@ -41,7 +41,8 @@ class ProfileResponse(Response):
     user: UserData
 
 
-class LoginResponse(SessionResponse, ProfileResponse): ...
+class LoginResponse(SessionResponse, ProfileResponse):
+    ...
 
 
 class ForgotPasswordRequest(BaseModel):

@@ -11,6 +11,7 @@
   - password `str`
   - phone_number `str` `nr`
   - image `str`
+  - verified `bool` `nr`
 
 - Transaction
 

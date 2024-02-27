@@ -13,6 +13,7 @@ class User(Model):
         password: str,
         phone_number: str = "",
         image: str = "",
+        verified: bool = False,
         **kwargs
     ) -> None:
         super().__init__(
@@ -27,6 +28,7 @@ class User(Model):
         self.password = password
         self.phone_number = phone_number
         self.image = image
+        self.verified = verified
 
 
 class Users(Models):
