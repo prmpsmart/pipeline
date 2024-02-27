@@ -11,7 +11,7 @@ class OTP(Child):
         Child.__init__(self, id=user.email)
         self.user = user
         self.otp: int = 0
-        self.verified = user.verifiedEmail
+        self.verified = user.verified
         self.last_otp_generated_time: int = 0
 
     @modifier

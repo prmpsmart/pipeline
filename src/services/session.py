@@ -49,7 +49,7 @@ class Client(Child):
 
     @property
     def verified(self) -> bool:
-        return self.user.verifiedEmail
+        return self.user.verified
 
     # @modifier
     def send_otp(self) -> bool:
@@ -58,7 +58,7 @@ class Client(Child):
     def verify_otp(self, otp: int) -> bool:
         valid = self.otp.verify(otp)
         if valid:
-            self.user.verifiedEmail = True
+            self.user.verified = True
             self.user.save()
         return valid
 
