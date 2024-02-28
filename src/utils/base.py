@@ -23,6 +23,7 @@ class Base:
 
     def kill(self):
         self.alive = False
+        self.modified()
 
     def modified(self):
         self.modified_timestamp = get_timestamp()

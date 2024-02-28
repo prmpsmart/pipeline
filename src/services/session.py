@@ -12,13 +12,15 @@ class Session(Child):
 
         self.user = user
         self.client = Client(self, user)
+        self.session_db: SessionDb = SessionDbs.create(
+            id=self.id,
+            created_timestamp=self.modified_timestamp,
+            user_id=self.user.id,
+        )
 
     @property
     def valid(self) -> bool:
         return (get_timestamp() - self.modified_timestamp) <= SESSION_TIMEOUT
-
-    def attach_websocket(self, sid: str):
-        self.client.set_sid(sid)
 
     def set_sid(self, sid: str):
         self.client.set_sid(sid)
@@ -29,6 +31,8 @@ class Session(Child):
     def kill(self):
         self.client.kill()
         super().kill()
+        self.session_db.deleted_timestamp = self.modified_timestamp
+        self.session_db.save()
 
 
 class Client(Child):

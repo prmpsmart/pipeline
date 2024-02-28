@@ -8,13 +8,18 @@ class Transaction(Model):
         *,
         id: str,
         created_timestamp: int,
+        type: str,
         amount: float = None,
-        sender: str = "",
-        receiver: str = "",
+        status: str = "",
         main_pipeline: str = "",
         branch_pipeline: str = "",
+        sender: str = "",
+        sender_bank: str = "",
+        receiver: str = "",
+        receiver_bank: str = "",
+        account_no: str = "",
         remark: str = "",
-        originating_bank: str = "",
+        session_id: str = "",
         **kwargs
     ) -> None:
         super().__init__(
@@ -24,13 +29,18 @@ class Transaction(Model):
 
         self.id = id
         self.created_timestamp = created_timestamp
+        self.type = type
         self.amount = amount
-        self.sender = sender
-        self.receiver = receiver
+        self.status = status
         self.main_pipeline = main_pipeline
         self.branch_pipeline = branch_pipeline
+        self.sender = sender
+        self.sender_bank = sender_bank
+        self.receiver = receiver
+        self.receiver_bank = receiver_bank
+        self.account_no = account_no
         self.remark = remark
-        self.originating_bank = originating_bank
+        self.session_id = session_id
 
 
 class Transactions(Models):

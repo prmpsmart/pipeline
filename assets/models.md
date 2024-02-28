@@ -1,5 +1,13 @@
 # Models of the Pipeline App
 
+- SessionDb
+
+  - id `str`
+  - created_timestamp `int`
+
+  - user_id `str`
+  - deleted_timestamp `int` `nr`
+
 - User
 
   - id `str`
@@ -18,13 +26,23 @@
   - id `str` `unique`
   - created_timestamp `int`
 
+  - type `str`
   - amount `float` `nr`
-  - sender `str`
-  - receiver `str`
+  - status `str`
+
   - main_pipeline `str`
   - branch_pipeline `str`
+
+  - sender `str`
+  - sender_bank `str`
+
+  - receiver `str`
+  - receiver_bank `str`
+
+  - account_no `str`
+
   - remark `str`
-  - originating_bank `str`
+  - session_id `str`
 
 - Wallet
 
