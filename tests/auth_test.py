@@ -4,69 +4,30 @@ from .core import Test
 class AuthTest(Test):
     url_prefix = "auth"
 
-    def register_artisan(
+    def register(
         self,
         full_name: str,
         email: str,
         phone_number: str,
         password: str,
-        profession: str,
-        about: str,
-        education: str,
-        profile_image: str,
-        age: int,
-        id_verification: str,
-        id_verification_image: str,
+        image: str = "",
     ):
         return self.post(
-            "register_artisan",
+            "register",
             json=dict(
                 full_name=full_name,
                 email=email,
                 phone_number=phone_number,
                 password=password,
-                profession=profession,
-                about=about,
-                education=education,
-                profile_image=profile_image,
-                age=age,
-                id_verification=id_verification,
-                id_verification_image=id_verification_image,
+                image=image,
             ),
         )
 
-    def register_client(
-        self,
-        full_name: str,
-        email: str,
-        password: str,
-        address: str,
-        nationality: str,
-        gender: str,
-        id_verification_image: str,
-        age: int,
-        id_verification: str,
-    ):
-        return self.post(
-            "register_client",
-            json=dict(
-                full_name=full_name,
-                email=email,
-                password=password,
-                address=address,
-                nationality=nationality,
-                gender=gender,
-                id_verification_image=id_verification_image,
-                age=age,
-                id_verification=id_verification,
-            ),
-        )
-
-    def login(self, email_or_username: str, password: str):
+    def login(self, email: str, password: str):
         return self.post(
             "login",
             json=dict(
-                email_or_username=email_or_username,
+                email=email,
                 password=password,
             ),
         )
@@ -109,10 +70,22 @@ class AuthTest(Test):
             ),
         )
 
-    # def delete_users(self, unique_id: str):
-    #     return self.post(
-    #         "delete_users",
-    #         json=dict(
-    #             unique_id=unique_id,
-    #         ),
-    #     )
+    def get_profile(self):
+        return self.get("profile")
+
+    def update_profile(
+        self,
+        full_name: str = "",
+        email: str = "",
+        phone_number: str = "",
+        image: str = "",
+    ):
+        return self.patch(
+            "profile",
+            json=dict(
+                full_name=full_name,
+                email=email,
+                phone_number=phone_number,
+                image=image,
+            ),
+        )

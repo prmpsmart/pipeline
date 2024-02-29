@@ -143,23 +143,15 @@ class Models(Singleton):
         skip: int = 0,
         sort: list[str] | str = None,
         descending: bool = False,
-        search_or: dict = {},
-        search_and: dict = {},
+        search_or: list = [],
+        search_and: list = [],
         count: bool = False,
     ):
         if search_or:
-            _or = []
-            for k, v in search_or.items():
-                if v and isinstance(v, str):
-                    _or.append({k: v})
-            filters["$or"] = _or
+            filters["$or"] = search_or
 
         if search_and:
-            _and = []
-            for k, v in search_and.items():
-                if v and isinstance(v, str):
-                    _and.append({k: v})
-            filters["$and"] = _and
+            filters["$and"] = search_and
 
         if count:
             return self.collection.count_documents(filters)
@@ -181,22 +173,14 @@ class Models(Singleton):
     def find_one(
         self,
         filters: dict = {},
-        search_or: dict = {},
-        search_and: dict = {},
+        search_or: list = [],
+        search_and: list = [],
     ):
         if search_or:
-            _or = []
-            for k, v in search_or.items():
-                if v and isinstance(v, str):
-                    _or.append({k: v})
-            filters["$or"] = _or
+            filters["$or"] = search_or
 
         if search_and:
-            _and = []
-            for k, v in search_and.items():
-                if v and isinstance(v, str):
-                    _and.append({k: v})
-            filters["$and"] = _and
+            filters["$and"] = search_and
 
         one = self.collection.find_one(filters)
         if one:

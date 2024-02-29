@@ -1,1 +1,1 @@
-from .server import server, sio_server
+from .server import server

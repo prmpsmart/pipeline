@@ -28,7 +28,6 @@ class ProfileUpdateRequest(BaseModel):
     email: Optional[str]
 
     phone_number: Optional[str]
-    password: Optional[str]
     image: Optional[str]
 
 

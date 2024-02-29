@@ -20,6 +20,7 @@
   - phone_number `str` `nr`
   - image `str`
   - verified `bool` `nr`
+  - deleted `bool`
 
 - Transaction
 
@@ -59,7 +60,9 @@
 
   - name `str`
   - email `str`
-  - balance `float`
+  - percentage `float`
+  - deleted `bool` `nr`
+  - deleted_timestamp `int` `nr`
 
 - BranchPipeline
 
@@ -69,4 +72,6 @@
   - name `str`
   - main_pipeline `str`
   - email `str`
-  - balance `float`
+  - percentage `float`
+  - deleted `bool` `nr`
+  - deleted_timestamp `int` `nr`

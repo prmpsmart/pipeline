@@ -2,7 +2,6 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from ..constants.config import *
 from ..routes import routers
-from .sio_server import *
 from .utils import *
 
 
@@ -11,10 +10,7 @@ server = FastAPI(
     lifespan=lifespan,
 )
 
-sio_server.other_asgi_app = server
-
-server.mount("/ws", sio_app)
-
+wildcard = "*"
 server.add_middleware(
     CORSMiddleware,
     allow_origins=wildcard,

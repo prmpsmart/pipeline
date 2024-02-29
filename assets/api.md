@@ -1,28 +1,48 @@
 ## Auth
 
-- /auth/login `post`
-  > login a user
-- /auth/register `post`
-  > register a user
-- /auth/forget_password `post`
-  > this sends a resetting link to the user's email, the email leads to the webpage's set new password page
-- /auth/reset_password `post`
-  > send the reset_id from the user's email and the new password to this endpoint to reset users's password
+- /auth/register `post` ✅
+  > Register a user
+- /auth/login `post` ✅
+  > Login a user
+- /auth/forget_password `post` ✅
+  > This sends a resetting link to the user's email, the email leads to the webpage's set new password page
+- /auth/reset_password `post` ✅
+  > Send the reset_id from the user's email and the new password to this endpoint to reset users's password
+- /auth/profile `get` ✅
+  > Get a user's profile
+- /auth/profile `patch` ✅
+  > Update a user's profile
 
 ## Pipelines
 
-- /pipelines `get`
-
-  > get all pipelines
-
-- /pipelines/{pipeline_id} `post`
-  > creating a new pipeline
-- /pipelines/{pipeline_id} `patch`
-  > updating a single pipeline
+- /pipelines `get` ✅
+  > Get all main pipelines
+- /pipelines `post` ✅
+  > Create a new main pipeline
+- /pipelines/{pipeline} `get` ✅
+  > Get a main pipeline
+- /pipelines/{pipeline} `patch` ✅
+  > Update a main pipeline
+- /pipelines/{pipeline} `delete` ✅
+  > Delete a main pipeline
+- /pipelines/{pipeline} `post` ✅
+  > Create a new branch pipeline
+- /pipelines/{pipeline}/{branch} `get` ✅
+  > Get a branch pipeline
+- /pipelines/{pipeline}/{branch} `patch` ✅
+  > Update a branch pipeline
+- /pipelines/{pipeline}/{branch} `delete` ✅
+  > Delete a branch pipeline
 
 ## Transactions
 
 - /transactions `get`
-  > get all transactions
+  > Get all transactions
 - /transactions/{transaction_id} `get`
-  > get a single transaction
+  > Get a transaction
+- /transactions/send `post`
+  > Send a transaction
+
+### Paystack Webhook
+
+- webhook `post`

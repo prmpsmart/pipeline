@@ -10,7 +10,9 @@ class MainPipeline(Model):
         created_timestamp: int,
         name: str,
         email: str,
-        balance: float,
+        percentage: float,
+        deleted: bool = False,
+        deleted_timestamp: int = 0,
         **kwargs
     ) -> None:
         super().__init__(
@@ -22,7 +24,9 @@ class MainPipeline(Model):
         self.created_timestamp = created_timestamp
         self.name = name
         self.email = email
-        self.balance = balance
+        self.percentage = percentage
+        self.deleted = deleted
+        self.deleted_timestamp = deleted_timestamp
 
 
 class MainPipelines(Models):

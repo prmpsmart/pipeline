@@ -51,10 +51,12 @@ async def register(
         )
     elif not (
         user := Users.find_one(
-            search_or=dict(
-                email=email,
-                phone_number=phone_number,
-            ),
+            search_or=[
+                dict(
+                    email=email,
+                    phone_number=phone_number,
+                )
+            ],
         )
     ):
         user = Users.create(
@@ -231,6 +233,27 @@ async def reset_password(request: ResetPasswordRequest) -> Response:
             HTTP_406_NOT_ACCEPTABLE,
             detail="Invalid Reset OTP.",
         )
+
+
+@auth_router.get(
+    "/profile",
+    name="Get profile",
+    responses={
+        HTTP_200_OK: {
+            "model": ProfileResponse,
+            "description": "Profile returned successfully.",
+        },
+        HTTP_400_BAD_REQUEST: {
+            "model": Response,
+            "description": "Request body contains invalid data.",
+        },
+    },
+)
+async def profile(session: Session = get_user_session) -> ProfileResponse:
+    return ProfileResponse(
+        detail="Profile returned successfully",
+        user=get_user_data(session.user),
+    )
 
 
 @auth_router.patch(

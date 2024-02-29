@@ -14,6 +14,7 @@ class User(Model):
         phone_number: str = "",
         image: str = "",
         verified: bool = False,
+        deleted: bool = False,
         **kwargs
     ) -> None:
         super().__init__(
@@ -29,6 +30,7 @@ class User(Model):
         self.phone_number = phone_number
         self.image = image
         self.verified = verified
+        self.deleted = deleted
 
 
 class Users(Models):

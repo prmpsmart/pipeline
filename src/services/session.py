@@ -22,12 +22,6 @@ class Session(Child):
     def valid(self) -> bool:
         return (get_timestamp() - self.modified_timestamp) <= SESSION_TIMEOUT
 
-    def set_sid(self, sid: str):
-        self.client.set_sid(sid)
-
-    def remove_sid(self):
-        self.client.remove_sid()
-
     def kill(self):
         self.client.kill()
         super().kill()
@@ -40,16 +34,12 @@ class Client(Child):
         self,
         session: Session,
         user: User,
-        fcm_token: str = "",
     ):
         super().__init__()
 
         self.user = user
         self.session = session
         self.otp = OTP(user)
-
-        self.fcm_token = fcm_token
-        self.sid: str = ""
 
     @property
     def verified(self) -> bool:
@@ -66,12 +56,6 @@ class Client(Child):
             self.user.save()
         return valid
 
-    def set_sid(self, sid: str):
-        self.sid = sid
-
-    def remove_sid(self):
-        self.sid = None
-
     def kill(self):
         self.otp.kill()
         super().kill()
@@ -87,18 +71,6 @@ class Sessions(SingletonManager):
 
         self.clearing_reset_passwords = False
         self.started = False
-
-        self.sids: dict[str, Session] = {}
-
-    def set_session_sid(self, sid: str, session: Session):
-        session.set_sid(sid)
-        self.sids[sid] = session
-
-    def remove_session_sid(self, sid: str) -> Session:
-        if session := self.sids.get(sid):
-            session.remove_sid()
-            del self.sids[sid]
-            return session
 
     def create_session(self, user: User) -> None | Session:
         session = Session(user)

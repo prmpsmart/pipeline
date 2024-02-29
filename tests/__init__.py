@@ -1,2 +1,2 @@
 from .auth_test import AuthTest
-from .job_test import JobTest
+from .pipeline_test import PipelineTest

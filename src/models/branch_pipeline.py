@@ -11,7 +11,9 @@ class BranchPipeline(Model):
         name: str,
         main_pipeline: str,
         email: str,
-        balance: float,
+        percentage: float,
+        deleted: bool = False,
+        deleted_timestamp: int = 0,
         **kwargs
     ) -> None:
         super().__init__(
@@ -24,7 +26,9 @@ class BranchPipeline(Model):
         self.name = name
         self.main_pipeline = main_pipeline
         self.email = email
-        self.balance = balance
+        self.percentage = percentage
+        self.deleted = deleted
+        self.deleted_timestamp = deleted_timestamp
 
 
 class BranchPipelines(Models):
