@@ -1,3 +1,8 @@
+## Swagger UI DOCs
+
+- [Docs](https://pipeline-mnbv.onrender.com/docs)
+- [ReDoc](https://pipeline-mnbv.onrender.com/redoc)
+
 ## Auth
 
 - /auth/register `post` ✅
@@ -36,10 +41,14 @@
 
 ## Transactions
 
-- /transactions `get`
+- /transactions `get` ✅
   > Get all transactions
-- /transactions/{transaction_id} `get`
+- /transactions/{transaction_id} `get` ✅
   > Get a transaction
+- /transactions/{pipeline} `get` ✅
+  > Get a pipeline's transactions
+- /transactions/{pipeline}/{branch} `get` ✅
+  > Get a branch pipeline's transactions
 - /transactions/send `post`
   > Send a transaction
 

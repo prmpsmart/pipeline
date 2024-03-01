@@ -9,13 +9,15 @@ class Transaction(Model):
         id: str,
         created_timestamp: int,
         type: str,
-        amount: float = None,
-        status: str = "",
+        amount: float,
+        status: str,
         main_pipeline: str = "",
         branch_pipeline: str = "",
         sender: str = "",
+        sender_id: str = "",
         sender_bank: str = "",
         receiver: str = "",
+        receiver_id: str = "",
         receiver_bank: str = "",
         account_no: str = "",
         remark: str = "",
@@ -35,8 +37,10 @@ class Transaction(Model):
         self.main_pipeline = main_pipeline
         self.branch_pipeline = branch_pipeline
         self.sender = sender
+        self.sender_id = sender_id
         self.sender_bank = sender_bank
         self.receiver = receiver
+        self.receiver_id = receiver_id
         self.receiver_bank = receiver_bank
         self.account_no = account_no
         self.remark = remark

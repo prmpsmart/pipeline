@@ -7,4 +7,4 @@ from .transactions import transactions_router
 routers = APIRouter()
 routers.include_router(auth_router)
 routers.include_router(pipelines_router)
-# routers.include_router(transactions_router)
+routers.include_router(transactions_router)

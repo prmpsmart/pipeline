@@ -28,16 +28,21 @@
   - created_timestamp `int`
 
   - type `str`
-  - amount `float` `nr`
+  - amount `float`
   - status `str`
 
-  - main_pipeline `str`
-  - branch_pipeline `str`
+  - from_main_pipeline `str` `nr`
+  - from_branch_pipeline `str`
+
+  - to_main_pipeline `str`
+  - to_branch_pipeline `str`
 
   - sender `str`
+  - sender_id `str`
   - sender_bank `str`
 
   - receiver `str`
+  - receiver_id `str`
   - receiver_bank `str`
 
   - account_no `str`
