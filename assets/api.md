@@ -2,6 +2,7 @@
 
 - [Docs](https://pipeline-mnbv.onrender.com/docs)
 - [ReDoc](https://pipeline-mnbv.onrender.com/redoc)
+- [Figma](https://www.figma.com/file/RRSssi71JTClhSkGwOplfv/Pipeline-Screens?type=design&node-id=0-1&mode=design)
 
 ## Auth
 
