@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from ...models.user import User
+from ...models import *
 from ...services.mail.otp import ResetOTP
 from ...utils.validators import Validator
 from .utils import *
@@ -43,6 +43,7 @@ async def register(
     )
 
     user: User
+    detail = ''
 
     if detail:
         raise HTTPException(
@@ -65,9 +66,16 @@ async def register(
         session: Session = Sessions.create_session(user)
         # session.client.send_otp()
 
+        for name in ["Personal", "Business"]:
+            MainPipelines.create(
+                name=name,
+                email=user.email,
+                percentage=0,
+            )
+
         return get_login_response(
             session=session,
-            detail=f"Account created successful. OTP has been sent to `{email}`",
+            detail=f"Account created successfully. OTP has been sent to `{email}`",
         )
     else:
         # Users.delete_child(user._id)
