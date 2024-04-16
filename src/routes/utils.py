@@ -18,7 +18,7 @@ algorithm = "HS256"
 
 
 def get_access_token(session_id: str, user_id: str) -> str:
-    now = datetime.utcnow()
+    now = datetime.now()
     payload = dict(
         session_id=session_id,
         user_id=user_id,
@@ -29,7 +29,7 @@ def get_access_token(session_id: str, user_id: str) -> str:
 
 
 def get_refresh_token(session_id: str, user_id: str) -> str:
-    now = datetime.utcnow()
+    now = datetime.now()
     payload = dict(
         session_id=session_id,
         user_id=user_id,

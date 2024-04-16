@@ -7,7 +7,7 @@ url = "http://127.0.0.1:8000"
 email = "miracle.apata@mailinator.com"
 password = "securepassword123"
 
-email = "testuser@mailinator.com"
+email = "prmpsmart@mailinator.com"
 password = "password"
 
 auth = AuthTest(url)
@@ -27,7 +27,7 @@ auth.login(
 
 # auth.forgot_password(email)
 # auth.reset_password(427893, email, "new_password")
-
+exit()
 
 pipeline = PipelineTest(url)
 pipeline.access_token = auth.access_token

@@ -2,6 +2,7 @@ from fastapi import APIRouter
 
 from ...models import *
 from ...services.mail.otp import ResetOTP
+from ...services.mail.gmail import GmailSend
 from ...utils.validators import Validator
 from .utils import *
 
@@ -43,7 +44,7 @@ async def register(
     )
 
     user: User
-    detail = ''
+    detail = ""
 
     if detail:
         raise HTTPException(
@@ -93,6 +94,82 @@ async def register(
     name="User Login",
     responses={
         HTTP_200_OK: {
+            "model": Response,
+            "description": "Verify login in email.",
+        },
+        HTTP_400_BAD_REQUEST: {
+            "model": Response,
+            "description": "Request body contains invalid data.",
+        },
+        HTTP_406_NOT_ACCEPTABLE: {
+            "model": Response,
+            "description": "Invalid `email`, or `password`.",
+        },
+    },
+)
+def login(request: LoginRequest) -> Response:
+    email = request.email
+    password = request.password
+
+    detail = Validator.validate_email(email) or Validator.validate_password(password)
+
+    if detail:
+        raise HTTPException(
+            HTTP_400_BAD_REQUEST,
+            detail=detail,
+        )
+
+    # elif session := Sessions.get_by_email(request.email):
+    #     return get_login_response(
+    #         password=request.password,
+    #         session=session,
+    #     )
+
+    elif user := Users.find_one(dict(email=email)):
+        user: User
+        if verify_hash(password, user.password):
+            now = datetime.now()
+            payload = dict(
+                user_id=user.id,
+                iat=now,
+                exp=now + timedelta(minutes=10),
+            )
+            token = jwt.encode(payload, SECRET_KEY, algorithm=algorithm)
+
+            # send the email now
+            link = f"http://pipeline-beta.vercel.app/verifyLogin?token={token}"
+
+            GmailSend.send(
+                user.email,
+                user.full_name,
+                "Verify Login",
+                f"Click this link to verify your login {link}",
+            )
+
+            return Response(detail="Verify login in email")
+
+        # return get_login_response(
+        #     user=user,
+        #     password=request.password,
+        # )
+        else:
+            raise HTTPException(
+                HTTP_406_NOT_ACCEPTABLE,
+                detail=f"Invalid password.",
+            )
+
+    else:
+        raise HTTPException(
+            HTTP_404_NOT_FOUND,
+            detail=f"User with `email` `{email}` does not exists.",
+        )
+
+
+@auth_router.get(
+    "/verifyLogin",
+    name="Verify User Login",
+    responses={
+        HTTP_200_OK: {
             "model": LoginResponse,
             "description": "Login successful.",
         },
@@ -106,36 +183,19 @@ async def register(
         },
     },
 )
-def login(request: LoginRequest) -> LoginResponse:
-    email = request.email
+def verifyLogin(token: str) -> LoginResponse:
+    try:
+        payload = jwt.decode(token)
+        if user := Users.find_child(payload["user_id"]):
+            return get_login_response(user=user)
 
-    detail = Validator.validate_email(email) or Validator.validate_password(
-        request.password
-    )
-
-    if detail:
-        raise HTTPException(
-            HTTP_400_BAD_REQUEST,
-            detail=detail,
-        )
-
-    elif session := Sessions.get_by_email(request.email):
-        return get_login_response(
-            password=request.password,
-            session=session,
-        )
-
-    elif user := Users.find_one(dict(email=email)):
-        return get_login_response(
-            user=user,
-            password=request.password,
-        )
-
-    else:
-        raise HTTPException(
-            HTTP_404_NOT_FOUND,
-            detail=f"User with `email` `{email}` does not exists.",
-        )
+        else:
+            raise HTTPException(
+                HTTP_404_NOT_FOUND,
+                detail=f"User with `email` `{email}` does not exists.",
+            )
+    except:
+        raise HTTPException(HTTP_406_NOT_ACCEPTABLE, detail="Bad verification token")
 
 
 @auth_router.post(

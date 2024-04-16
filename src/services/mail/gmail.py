@@ -110,6 +110,8 @@ class GmailSend(SingletonChild):
                 )
                 .execute()
             )
+        else:
+            LOGGER.debug('No Gmail Service')
 
     def send_otp(
         self,
